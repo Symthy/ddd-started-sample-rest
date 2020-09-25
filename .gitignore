@@ -1,2 +1,4 @@
+.vscode/
 src/node_modules
+src/build
 vagrant/bento_ubuntu-20.04/.vagrant
