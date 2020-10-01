@@ -1,3 +1,3 @@
-interface IDbContext {
+export interface IDbContext {
 
 }

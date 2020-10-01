@@ -1,3 +1,4 @@
+import { Inject } from "typedi/decorators/Inject";
 import { User } from "../../domain/User";
 import { UserId } from "../../domain/UserId";
 import { IUserRepository } from "./repository/IUserRepository";
@@ -6,12 +7,12 @@ import { UserGetResult } from "./result/UserGetResult";
 
 export class UserApplicationService {
   private readonly userFactory: IUserFactory
-  private readonly userRepository: IUserRepository
+  @Inject()
+  private readonly userRepository!: Repository<UserDao>
   private readonly userService: UserService
 
-  public constructor(userFactory: IUserFactory, userRepository: IUserRepository, userService: UserService) {
+  public constructor(userFactory: IUserFactory, userService: UserService) {
     this.userFactory = userFactory;
-    this.userRepository = userRepository;
     this.userService = userService;
   }
 

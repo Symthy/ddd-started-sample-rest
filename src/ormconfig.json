@@ -2,23 +2,23 @@
    "type": "postgres",
    "host": "localhost",
    "port": 5432,
-   "username": "test",
-   "password": "test",
-   "database": "test",
+   "username": "postgres",
+   "password": "postgres",
+   "database": "dddsample",
    "synchronize": true,
    "logging": false,
    "entities": [
-      "src/entity/**/*.ts"
+      "app/entity/**/*.ts"
    ],
    "migrations": [
-      "src/migration/**/*.ts"
+      "app/migration/**/*.ts"
    ],
    "subscribers": [
-      "src/subscriber/**/*.ts"
+      "app/subscriber/**/*.ts"
    ],
    "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
+      "entitiesDir": "app/entity",
+      "migrationsDir": "app/migration",
+      "subscribersDir": "app/subscriber"
    }
 }

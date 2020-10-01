@@ -1,4 +1,6 @@
-# Awesome Project Build with TypeORM
+# Awesome Project Build with TypeORM, routing-controllers
+
+開発中のため動きません
 
 Steps to run this project:
 
