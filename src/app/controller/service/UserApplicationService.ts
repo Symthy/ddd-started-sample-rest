@@ -1,4 +1,4 @@
-import { UserDao } from "app/entity/UserDao";
+import { UserDao } from "app/db/entity/UserDao";
 import { Inject } from "typedi/decorators/Inject";
 import { Repository } from "typeorm";
 import { User } from "../../domain/User";
@@ -20,7 +20,7 @@ export class UserApplicationService {
 
   public get(command: UserGetCommand): UserGetResult {
     const id = new UserId(command.id);
-    const user = this.userRepository.find(id);
+    const user = this.userRepository.findById(id);
     const result = new UserGetResult(user);
     return result;
   }

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import { UserDao } from "./UserDao";
 
-@Entity()
+@Entity('groups')
 export class GroupDao {
 
   @PrimaryGeneratedColumn()

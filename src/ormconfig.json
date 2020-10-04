@@ -1,6 +1,6 @@
 {
    "type": "postgres",
-   "host": "localhost",
+   "host": "192.168.3.10",
    "port": 5432,
    "username": "postgres",
    "password": "postgres",
@@ -8,17 +8,17 @@
    "synchronize": true,
    "logging": false,
    "entities": [
-      "app/entity/**/*.ts"
+      "app/db/entity/**/*.ts"
    ],
    "migrations": [
-      "app/migration/**/*.ts"
+      "app/db/migration/**/*.ts"
    ],
    "subscribers": [
-      "app/subscriber/**/*.ts"
+      "app/db/subscriber/**/*.ts"
    ],
    "cli": {
-      "entitiesDir": "app/entity",
-      "migrationsDir": "app/migration",
-      "subscribersDir": "app/subscriber"
+      "entitiesDir": "app/db/entity",
+      "migrationsDir": "app/db/migration",
+      "subscribersDir": "app/db/subscriber"
    }
 }

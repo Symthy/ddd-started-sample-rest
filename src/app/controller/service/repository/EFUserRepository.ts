@@ -2,7 +2,7 @@ import { User } from "app/domain/User";
 import { UserId } from "app/domain/UserId";
 import { UserName } from "app/domain/UserName";
 import { transferType } from "app/domain/UserType";
-import { UserDao } from "app/entity/UserDao";
+import { UserDao } from "app/db/entity/UserDao";
 import { Repository } from "typeorm";
 import { updateConstructorTypeNode } from "typescript";
 import { IDbContext } from "./context/IDbContext";

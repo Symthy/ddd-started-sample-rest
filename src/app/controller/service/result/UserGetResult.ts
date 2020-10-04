@@ -1,4 +1,5 @@
-import { User } from "#/public/scripts/domain/User";
+import { User } from "app/domain/User";
+
 
 export class UserGetResult {
   public constructor(private _user: User) {
