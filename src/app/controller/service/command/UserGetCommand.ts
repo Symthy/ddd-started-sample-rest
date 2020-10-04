@@ -1,8 +1,8 @@
 class UserGetCommand {
-  public constructor(private _id: string) {
+  public constructor(private _id: number) {
   }
 
-  public get id(): string {
+  public get id(): number {
     return this._id;
   }
 }

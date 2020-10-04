@@ -1,4 +1,6 @@
+import { UserDao } from "app/entity/UserDao";
 import { Inject } from "typedi/decorators/Inject";
+import { Repository } from "typeorm";
 import { User } from "../../domain/User";
 import { UserId } from "../../domain/UserId";
 import { IUserRepository } from "./repository/IUserRepository";
@@ -8,7 +10,7 @@ import { UserGetResult } from "./result/UserGetResult";
 export class UserApplicationService {
   private readonly userFactory: IUserFactory
   @Inject()
-  private readonly userRepository!: Repository<UserDao>
+  private readonly userRepository!: IUserRepository
   private readonly userService: UserService
 
   public constructor(userFactory: IUserFactory, userService: UserService) {

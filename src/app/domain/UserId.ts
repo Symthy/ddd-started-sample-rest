@@ -1,7 +1,7 @@
 export class UserId {
-  public constructor(private _value: string) {
+  public constructor(private _value: number) {
   }
-  public get value(): string {
+  public get value(): number {
     return this._value
   }
 }
