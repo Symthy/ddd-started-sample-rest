@@ -1,27 +1,24 @@
-import { UserGetResponseModel } from "../model/response/UserGetResponseModel";
+import { UserData } from "./service/dto/UserData";
+import { UserDataList } from "./service/dto/UserDataList";
 import { UserApplicationService } from "./service/UserApplicationService";
 
-class UserController {
+export class UserController {
   private readonly userApplicationService: UserApplicationService
 
   public constructor(service: UserApplicationService) {
     this.userApplicationService = service;
   }
 
-  public index(): UserIndexResponseModel {
-    const result = this.userApplicationService.getAll();
-    const users = result.users.map(user => new UserResponseModel(user.id, user.name));
-    return new UserIndexResponseModel(users);
+  public index(): Promise<UserDataList> {
+    return this.userApplicationService.getAll();
   }
 
-  public get(id: string): UserGetResponseModel {
+  public get(id: number): Promise<UserData | null> {
     const command = new UserGetCommand(id);
-    const result = this.userApplicationService.get(command);
-    return new UserGetResponseModel(result.user);
+    return this.userApplicationService.get(command);
   }
 
   public post(request: UserPostRequestModel) {
-    return new UserPostResponseModel();
   }
 
   public put(id: string, request: UserPutRequestModel): void {

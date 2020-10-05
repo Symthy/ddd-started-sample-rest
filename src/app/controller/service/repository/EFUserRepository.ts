@@ -4,22 +4,26 @@ import { UserName } from "app/domain/UserName";
 import { transferType } from "app/domain/UserType";
 import { UserDao } from "app/db/entity/UserDao";
 import { Repository } from "typeorm";
-import { updateConstructorTypeNode } from "typescript";
-import { IDbContext } from "./context/IDbContext";
 import { IUserRepository } from "./IUserRepository";
+import { UserData } from "../dto/UserData";
 
 class EFUserRepository implements IUserRepository {
 
   public constructor(private readonly dbcontext: Repository<UserDao>) {
   }
 
-  public async findById(id: UserId): Promise<User | null> {
-    const userData = this.dbcontext.findOne(id.value).then(result => {
-        if (result == undefined) {
-          return null;
-        }
-        return new User(new UserId(result.id), new UserName(result.name), transferType(result.type))
+  public async findById(id: UserId): Promise<UserData | null> {
+    const user = this.dbcontext.findOne(id.value).then(result => {
+      if (result === undefined) {
+        return null;
+      }
+      return new UserData(result);
     });
-    return userData;
+    return user;
+  }
+
+  public async findAll(): Promise<UserDataList> {
+    const users = this.dbcontext.query(`SELECT * FROM USERS`).then(result => { return result });
+    return users;
   }
 }

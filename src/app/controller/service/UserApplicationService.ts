@@ -1,11 +1,7 @@
-import { UserDao } from "app/db/entity/UserDao";
 import { Inject } from "typedi/decorators/Inject";
-import { Repository } from "typeorm";
-import { User } from "../../domain/User";
 import { UserId } from "../../domain/UserId";
+import { UserData } from "./dto/UserData";
 import { IUserRepository } from "./repository/IUserRepository";
-import { UserGetAllResult } from "./result/UserGetAllResult";
-import { UserGetResult } from "./result/UserGetResult";
 
 export class UserApplicationService {
   private readonly userFactory: IUserFactory
@@ -18,15 +14,12 @@ export class UserApplicationService {
     this.userService = userService;
   }
 
-  public get(command: UserGetCommand): UserGetResult {
+  public get(command: UserGetCommand): Promise<UserData | null> {
     const id = new UserId(command.id);
-    const user = this.userRepository.findById(id);
-    const result = new UserGetResult(user);
-    return result;
+    return this.userRepository.findById(id);
   }
 
-  public getAll(): UserGetAllResult {
-    const result = new UserGetAllResult(new Array<User>());
-    return result;
+  public getAll(): Promise<UserDataList> {
+    return this.userRepository.findAll();
   }
 }
