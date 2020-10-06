@@ -1,3 +1,4 @@
+import { Body, Delete, Get, Param, Post, Put } from "routing-controllers";
 import { UserData } from "./service/dto/UserData";
 import { UserDataList } from "./service/dto/UserDataList";
 import { UserApplicationService } from "./service/UserApplicationService";
@@ -9,21 +10,26 @@ export class UserController {
     this.userApplicationService = service;
   }
 
+  @Get('/users')
   public index(): Promise<UserDataList> {
     return this.userApplicationService.getAll();
   }
 
-  public get(id: number): Promise<UserData | null> {
+  @Get('/users/:id')
+  public get(@Param("id") id: number): Promise<UserData | null> {
     const command = new UserGetCommand(id);
     return this.userApplicationService.get(command);
   }
 
-  public post(request: UserPostRequestModel) {
+  @Post("/users")
+  public post(@Body() user: UserPostRequestModel) {
   }
 
-  public put(id: string, request: UserPutRequestModel): void {
+  @Put("/users/:id")
+  public put(@Param("id") id: number, @Body() user: UserPutRequestModel): void {
   }
 
-  public delete(id: string): void {
+  @Delete("/users/:id")
+  public delete(id: number): void {
   }
 }
