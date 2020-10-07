@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
 
 @Entity('users')
-export class UserDao {
+export class UserModel {
 
     @PrimaryGeneratedColumn()
     readonly id!: number;

@@ -2,14 +2,16 @@ import { User } from "app/domain/User";
 import { UserId } from "app/domain/UserId";
 import { UserName } from "app/domain/UserName";
 import { transferType } from "app/domain/UserType";
-import { UserDao } from "app/db/entity/UserDao";
-import { Repository } from "typeorm";
+import { UserModel } from "#/db/entity/UserModel";
+import { DeleteQueryBuilder, Repository } from "typeorm";
 import { IUserRepository } from "./IUserRepository";
 import { UserData } from "../dto/UserData";
+import { UserDataList } from "../dto/UserDataList";
+import { UserDataModelBuilder } from "#/db/UserModelBuilder";
 
 class EFUserRepository implements IUserRepository {
 
-  public constructor(private readonly dbcontext: Repository<UserDao>) {
+  public constructor(private readonly dbcontext: Repository<UserModel>) {
   }
 
   public async findById(id: UserId): Promise<UserData | null> {
@@ -25,5 +27,14 @@ class EFUserRepository implements IUserRepository {
   public async findAll(): Promise<UserDataList> {
     const users = this.dbcontext.query(`SELECT * FROM USERS`).then(result => { return result });
     return users;
+  }
+
+  public async save(user: User): Promise<UserData> {
+    const userModelBuilder = new UserDataModelBuilder();
+    user.notify(userModelBuilder);
+    const userModel = userModelBuilder.build();
+    return this.dbcontext.save(userModel).then(result => {
+      return new UserData(result);
+     });
   }
 }

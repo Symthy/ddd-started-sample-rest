@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, CreateDateColumn, ManyToMany, JoinTable } from "typeorm";
-import { UserDao } from "./UserDao";
+import { UserModel } from "./UserModel";
 
 @Entity('groups')
-export class GroupDao {
+export class GroupModel {
 
   @PrimaryGeneratedColumn()
   readonly id!: number;
@@ -10,11 +10,11 @@ export class GroupDao {
   @Column()
   name!: string;
 
-  @OneToOne(type => UserDao)
+  @OneToOne(type => UserModel)
   @JoinColumn({ name: 'user_id'})
   owner!: string;
 
-  @ManyToMany(type => UserDao)
+  @ManyToMany(type => UserModel)
   @JoinTable({
     joinColumn: {
       name: 'group_id',
@@ -24,7 +24,7 @@ export class GroupDao {
       name: 'user_id',
       referencedColumnName: 'id',
     },})
-  member?: UserDao[];
+  member?: UserModel[];
 
   @CreateDateColumn({ name: 'create_at' })
   readonly createdAt!: Date;
