@@ -1,7 +1,9 @@
+import { UserPostRequestModel } from "#/request/UserPostRequestModel";
+import { UserRegisterCommand } from "#/service/command/UserRegisterCommand";
 import { Body, Delete, Get, Param, Post, Put } from "routing-controllers";
-import { UserData } from "./service/dto/UserData";
-import { UserDataList } from "./service/dto/UserDataList";
-import { UserApplicationService } from "./service/UserApplicationService";
+import { UserData } from "../service/dto/UserData";
+import { UserDataList } from "../service/dto/UserDataList";
+import { UserApplicationService } from "../service/UserApplicationService";
 
 export class UserController {
   private readonly userApplicationService: UserApplicationService
@@ -22,7 +24,9 @@ export class UserController {
   }
 
   @Post("/users")
-  public post(@Body() user: UserPostRequestModel) {
+  public post(@Body() user: UserPostRequestModel): void {
+    const command = new UserRegisterCommand(user);
+    this.userApplicationService.register(command);
   }
 
   @Put("/users/:id")

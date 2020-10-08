@@ -3,7 +3,7 @@ import { UserId } from "app/domain/UserId";
 import { UserName } from "app/domain/UserName";
 import { transferType } from "app/domain/UserType";
 import { UserModel } from "#/db/entity/UserModel";
-import { DeleteQueryBuilder, Repository } from "typeorm";
+import { DeleteQueryBuilder, Repository, Transaction } from "typeorm";
 import { IUserRepository } from "./IUserRepository";
 import { UserData } from "../dto/UserData";
 import { UserDataList } from "../dto/UserDataList";
@@ -29,6 +29,7 @@ class EFUserRepository implements IUserRepository {
     return users;
   }
 
+  @Transaction()
   public async save(user: User): Promise<UserData> {
     const userModelBuilder = new UserDataModelBuilder();
     user.notify(userModelBuilder);

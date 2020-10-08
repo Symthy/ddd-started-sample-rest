@@ -1,7 +1,8 @@
 import { IUserFactory } from "#/domain/factory/IUserFactory";
 import { UserName } from "#/domain/UserName";
 import { Inject } from "typedi/decorators/Inject";
-import { UserId } from "../../domain/UserId";
+import { UserId } from "../domain/UserId";
+import { UserRegisterCommand } from "./command/UserRegisterCommand";
 import { UserData } from "./dto/UserData";
 import { UserDataList } from "./dto/UserDataList";
 import { IUserRepository } from "./repository/IUserRepository";
@@ -27,13 +28,9 @@ export class UserApplicationService {
   }
 
   public register(command: UserRegisterCommand): void {
-    try {
-      const name = new UserName(command.name);
-      const user = this.userFactory.create(name);
-      this.userRepository.save(user);
-    } catch (e) {
-
-    }
+    const name = new UserName(command.name);
+    const user = this.userFactory.create(name);
+    this.userRepository.save(user);
   }
 
   public update(command: UserUpdateCommand): void {
