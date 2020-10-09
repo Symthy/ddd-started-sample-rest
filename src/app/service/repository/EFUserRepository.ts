@@ -24,6 +24,11 @@ class EFUserRepository implements IUserRepository {
     return user;
   }
 
+  public async find(user: UserModel): Promise<UserDataList> {
+    const users = this.dbcontext.find(user).then(result => { return new UserDataList(result) });
+    return users;
+  }
+
   public async findAll(): Promise<UserDataList> {
     const users = this.dbcontext.query(`SELECT * FROM USERS`).then(result => { return result });
     return users;
