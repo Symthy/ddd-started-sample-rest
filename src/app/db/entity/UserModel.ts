@@ -19,9 +19,15 @@ export class UserModel {
     @CreateDateColumn({ name: 'update_at' })
     readonly updatedAt!: Date;
 
-    constructor(user: User) {
-        this.id = user.id.value;
-        this.name = user.name.value;
-        this.type = user.type ? user.type.toString(): "";
+    constructor(id?: number, name?: string, type?: string) {
+        if (id) {
+            this.id = id;
+        }
+        if (name) {
+            this.name = name;
+        }
+        if (type) {
+            this.type = type;
+        }
     }
 }
