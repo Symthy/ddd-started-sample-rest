@@ -7,7 +7,10 @@ import { UserType } from "./UserType";
 
 export class User {
   private _type: UserType;
-  public constructor(private _name: UserName, private readonly _id?: UserId, _type?: UserType extends string ? UserType : undefined) {
+  public constructor(private readonly _id: UserId, private _name: UserName, _type?: UserType extends string ? UserType : undefined) {
+    if (_id === undefined) {
+      throw new ArgumentNullException("id");
+    }
     if (_name === undefined) {
       throw new ArgumentNullException("name");
     }
@@ -35,7 +38,9 @@ export class User {
   }
 
   public notify(note: IUserNotification) {
+    // 内部データを非公開のまま外部に引き渡すためのもの
     note.id(this.id);
     note.name(this.name);
+    note.type(this.type)
   }
 }

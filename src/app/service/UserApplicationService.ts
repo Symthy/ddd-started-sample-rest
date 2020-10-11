@@ -31,7 +31,7 @@ export class UserApplicationService {
   public register(command: UserRegisterCommand): void {
     const name = new UserName(command.name);
     const user = this.userFactory.create(name);
-    this.userRepository.save(user);
+    user.then(result => this.userRepository.save(result));
   }
 
   public update(command: UserUpdateCommand): void {

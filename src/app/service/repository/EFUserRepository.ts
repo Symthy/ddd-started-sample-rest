@@ -34,6 +34,10 @@ class EFUserRepository implements IUserRepository {
     return users;
   }
 
+  public async getNextId(): Promise<number> {
+    return this.dbcontext.query(`SELECT * FROM users WHERE id=(SELECT MAX(id) FROM users)`);
+  }
+
   @Transaction()
   public async save(user: User): Promise<UserData> {
     const userModelBuilder = new UserDataModelBuilder();
