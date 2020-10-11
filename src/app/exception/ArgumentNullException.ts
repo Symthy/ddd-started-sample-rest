@@ -1,4 +1,4 @@
-class ArgumentNullException extends Error {
+export class ArgumentNullException extends Error {
 
   public constructor(name: string) {
     super();

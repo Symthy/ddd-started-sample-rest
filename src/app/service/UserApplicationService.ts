@@ -1,4 +1,5 @@
 import { IUserFactory } from "#/domain/factory/IUserFactory";
+import { UserService } from "#/domain/service/UserService";
 import { UserName } from "#/domain/UserName";
 import { Inject } from "typedi/decorators/Inject";
 import { UserId } from "../domain/UserId";
