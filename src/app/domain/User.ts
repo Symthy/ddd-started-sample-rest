@@ -6,14 +6,18 @@ import { UserName } from "./UserName";
 import { UserType } from "./UserType";
 
 export class User {
+  private readonly _id: UserId;
+  private _name: UserName;
   private _type: UserType;
-  public constructor(private readonly _id: UserId, private _name: UserName, _type?: UserType extends string ? UserType : undefined) {
+  public constructor(_id?: UserId, _name?: UserName, _type?: UserType extends string ? UserType : undefined) {
     if (_id === undefined) {
       throw new ArgumentNullException("id");
     }
+    this._id = _id;
     if (_name === undefined) {
       throw new ArgumentNullException("name");
     }
+    this._name = _name;
     if (_type === undefined) {
       this._type = "Normal";
     } else {
@@ -21,11 +25,8 @@ export class User {
     }
   }
 
-  public get id(): UserId | never {
-    if (this._id) {
-      return this._id;
-    }
-    throw new NonExsitIdException();
+  public get id(): UserId {
+    return this._id;
   }
   public get name(): UserName {
     return this._name;

@@ -31,6 +31,8 @@ export class UserController {
 
   @Put("/users/:id")
   public put(@Param("id") id: number, @Body() user: UserPutRequestModel): void {
+    const command = new UserUpdateCommand(id, user.name, user.type);
+    this.userApplicationService.update(command);
   }
 
   @Delete("/users/:id")

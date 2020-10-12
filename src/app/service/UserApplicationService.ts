@@ -30,11 +30,13 @@ export class UserApplicationService {
 
   public register(command: UserRegisterCommand): void {
     const name = new UserName(command.name);
-    const user = this.userFactory.create(name);
+    const user = this.userFactory.createDecideId(name);
     user.then(result => this.userRepository.save(result));
   }
 
   public update(command: UserUpdateCommand): void {
-
+    const id = new UserId(command.id);
+    const name = command.name ? new UserName(command.name) : undefined;
+    this.userRepository.save(this.userFactory.create(id, name, command.type));
   }
 }

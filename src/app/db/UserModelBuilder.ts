@@ -19,6 +19,6 @@ export class UserDataModelBuilder implements IUserNotification {
     this._type = type;
   }
   public build(): UserModel {
-    return new UserModel(this._id?.value, this._name?.value, this._type ? this._type : "");
+    return new UserModel(this._id?.value, this._name?.value, this._type);
   }
 }

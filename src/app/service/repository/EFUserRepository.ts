@@ -8,6 +8,7 @@ import { IUserRepository } from "./IUserRepository";
 import { UserData } from "../dto/UserData";
 import { UserDataList } from "../dto/UserDataList";
 import { UserDataModelBuilder } from "#/db/UserModelBuilder";
+import { updateConstructorTypeNode } from "typescript";
 
 class EFUserRepository implements IUserRepository {
 
@@ -46,5 +47,25 @@ class EFUserRepository implements IUserRepository {
     return this.dbcontext.save(userModel).then(result => {
       return new UserData(result);
      });
+  }
+
+  private toDomain(from: UserModel): User {
+    return new User(
+      new UserId(from.id),
+      new UserName(from.name),
+      transferType(from.type)
+    )
+  }
+  private transfer(from: User, to: UserModel) {
+    to.id = from.id.value;
+    to.name = from.name.value;
+    to.type = from.type;
+  }
+  private toDataModel(from: User): UserModel {
+    return new UserModel(
+      from.id.value,
+      from.name.value,
+      transferType(from.type)
+    )
   }
 }

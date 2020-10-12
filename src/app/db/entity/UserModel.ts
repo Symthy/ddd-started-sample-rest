@@ -5,7 +5,7 @@ import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm"
 export class UserModel {
 
     @PrimaryGeneratedColumn()
-    readonly id!: number;
+    id!: number;
 
     @Column()
     name!: string;

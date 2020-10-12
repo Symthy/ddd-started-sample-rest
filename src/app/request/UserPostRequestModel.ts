@@ -1,8 +1,8 @@
 export class UserPostRequestModel {
-  private _id!: number;
+  private _id?: number;
   private _name!: string;
   private _type?: string;
-  public get id(): number {
+  public get id(): number | undefined {
     return this._id;
   }
   public get name(): string {
