@@ -23,10 +23,12 @@
     "tsconfig-paths": "^3.9.0",
     "typedi": "^0.8.0",
     "typeorm": "^0.2.27",
+    "typeorm-seeding": "^1.6.1",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
+    "@types/faker": "^5.1.2",
     "@types/http-errors": "^1.8.0",
     "@types/morgan": "^1.9.1",
     "tsc-watch": "^4.2.9"
