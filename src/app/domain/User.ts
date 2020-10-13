@@ -1,6 +1,5 @@
 import { IUserNotification } from "#/db/IUserNotification";
 import { ArgumentNullException } from "#/exception/ArgumentNullException";
-import { NonExsitIdException } from "#/exception/NonExsitIdException";
 import { UserId } from "./UserId";
 import { UserName } from "./UserName";
 import { UserType } from "./UserType";

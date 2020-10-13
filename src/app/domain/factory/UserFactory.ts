@@ -1,4 +1,4 @@
-import { IUserRepository } from "#/service/repository/IUserRepository";
+import { IUserRepository } from "#/repository/IUserRepository";
 import { User } from "../User";
 import { UserId } from "../UserId";
 import { UserName } from "../UserName";

@@ -6,9 +6,9 @@ import { Inject } from "typedi/decorators/Inject";
 import { Transaction } from "typeorm";
 import { UserId } from "../domain/UserId";
 import { UserRegisterCommand } from "./command/UserRegisterCommand";
-import { UserData } from "./dto/UserData";
-import { UserDataList } from "./dto/UserDataList";
-import { IUserRepository } from "./repository/IUserRepository";
+import { UserData } from "../dto/UserData";
+import { UserDataList } from "../dto/UserDataList";
+import { IUserRepository } from "../repository/IUserRepository";
 
 export class UserApplicationService {
   private readonly userFactory: IUserFactory

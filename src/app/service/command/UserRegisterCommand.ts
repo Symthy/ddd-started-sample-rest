@@ -1,4 +1,4 @@
-import { UserPostRequestModel } from "#/request/UserPostRequestModel";
+import { UserPostRequestModel } from "#/controller/request/UserPostRequestModel";
 
 export class UserRegisterCommand {
   private _id?: number;
