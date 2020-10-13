@@ -3,12 +3,11 @@ import { UserId } from "app/domain/UserId";
 import { UserName } from "app/domain/UserName";
 import { transferType } from "app/domain/UserType";
 import { UserModel } from "#/db/entity/UserModel";
-import { DeleteQueryBuilder, Repository, Transaction } from "typeorm";
+import { Repository, Transaction } from "typeorm";
 import { IUserRepository } from "./IUserRepository";
 import { UserData } from "../dto/UserData";
 import { UserDataList } from "../dto/UserDataList";
 import { UserDataModelBuilder } from "#/db/UserModelBuilder";
-import { updateConstructorTypeNode } from "typescript";
 
 class EFUserRepository implements IUserRepository {
 
@@ -39,7 +38,6 @@ class EFUserRepository implements IUserRepository {
     return this.dbcontext.query(`SELECT * FROM users WHERE id=(SELECT MAX(id) FROM users)`);
   }
 
-  @Transaction()
   public async save(user: User): Promise<UserData> {
     const userModelBuilder = new UserDataModelBuilder();
     user.notify(userModelBuilder);
@@ -47,6 +45,15 @@ class EFUserRepository implements IUserRepository {
     return this.dbcontext.save(userModel).then(result => {
       return new UserData(result);
      });
+  }
+
+  public async remove(user: User): Promise<UserData> {
+    const userModelBuilder = new UserDataModelBuilder();
+    user.notify(userModelBuilder);
+    const userModel = userModelBuilder.build();
+    return this.dbcontext.remove(userModel).then(result => {
+      return new UserData(result);
+    });
   }
 
   private toDomain(from: UserModel): User {

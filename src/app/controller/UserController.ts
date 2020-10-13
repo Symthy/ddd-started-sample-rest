@@ -37,5 +37,7 @@ export class UserController {
 
   @Delete("/users/:id")
   public delete(id: number): void {
+    const command = new UserDeleteCommand(id);
+    this.userApplicationService.delete(command);
   }
 }
