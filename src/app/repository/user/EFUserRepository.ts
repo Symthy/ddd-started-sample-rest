@@ -1,13 +1,13 @@
-import { User } from "app/domain/User";
-import { UserId } from "app/domain/UserId";
-import { UserName } from "app/domain/UserName";
-import { transferType } from "app/domain/UserType";
 import { UserModel } from "#/db/entity/UserModel";
-import { Repository, Transaction } from "typeorm";
+import { Repository } from "typeorm";
 import { IUserRepository } from "./IUserRepository";
-import { UserData } from "../dto/UserData";
-import { UserDataList } from "../dto/UserDataList";
 import { UserDataModelBuilder } from "#/db/UserModelBuilder";
+import { UserId } from "#/domain/model/user/UserId";
+import { User } from "#/domain/model/user/User";
+import { transferType } from "#/domain/model/user/UserType";
+import { UserName } from "#/domain/model/user/UserName";
+import { UserData } from "#/dto/user/UserData";
+import { UserDataList } from "#/dto/user/UserDataList";
 
 class EFUserRepository implements IUserRepository {
 

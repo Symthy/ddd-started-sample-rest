@@ -1,6 +1,6 @@
-import { UserId } from "#/domain/UserId";
-import { UserName } from "#/domain/UserName";
-import { UserType } from "#/domain/UserType";
+import { UserId } from "#/domain/model/user/UserId";
+import { UserName } from "#/domain/model/user/UserName";
+import { UserType } from "#/domain/model/user/UserType";
 import { UserModel } from "./entity/UserModel";
 import { IUserNotification } from "./IUserNotification";
 

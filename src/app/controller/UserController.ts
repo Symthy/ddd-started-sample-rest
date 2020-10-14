@@ -1,9 +1,9 @@
 import { UserPostRequestModel } from "#/controller/request/UserPostRequestModel";
-import { UserRegisterCommand } from "#/service/command/UserRegisterCommand";
+import { UserData } from "#/dto/user/UserData";
+import { UserDataList } from "#/dto/user/UserDataList";
+import { UserRegisterCommand } from "#/service/user/command/UserRegisterCommand";
+import { UserApplicationService } from "#/service/user/UserApplicationService";
 import { Body, Delete, Get, Param, Post, Put } from "routing-controllers";
-import { UserData } from "../dto/UserData";
-import { UserDataList } from "../dto/UserDataList";
-import { UserApplicationService } from "../service/UserApplicationService";
 
 export class UserController {
   private readonly userApplicationService: UserApplicationService

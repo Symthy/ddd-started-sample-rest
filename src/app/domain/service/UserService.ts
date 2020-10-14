@@ -1,7 +1,7 @@
-import { UserModel } from "#/db/entity/UserModel";
 import { UserDataModelBuilder } from "#/db/UserModelBuilder";
-import { IUserRepository } from "#/repository/IUserRepository";
-import { User } from "../User";
+import { IUserRepository } from "#/repository/user/IUserRepository";
+import { User } from "../model/user/User";
+
 
 export class UserService {
   public constructor(private _userRepository: IUserRepository) {

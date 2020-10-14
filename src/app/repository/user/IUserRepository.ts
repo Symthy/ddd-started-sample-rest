@@ -1,9 +1,9 @@
 
 import { UserModel } from "#/db/entity/UserModel";
-import { User } from "#/domain/User";
-import { UserId } from "app/domain/UserId";
-import { UserData } from "../dto/UserData";
-import { UserDataList } from "../dto/UserDataList";
+import { User } from "#/domain/model/user/User";
+import { UserId } from "#/domain/model/user/UserId";
+import { UserData } from "#/dto/user/UserData";
+import { UserDataList } from "#/dto/user/UserDataList";
 
 export interface IUserRepository {
   findById(id: UserId): Promise<UserData | null>;

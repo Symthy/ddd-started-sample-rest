@@ -1,4 +1,3 @@
-import { User } from "#/domain/User";
 import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn} from "typeorm";
 
 @Entity('users')

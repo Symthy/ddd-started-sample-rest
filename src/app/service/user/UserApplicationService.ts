@@ -1,14 +1,14 @@
 import { IUserFactory } from "#/domain/factory/IUserFactory";
+import { UserId } from "#/domain/model/user/UserId";
+import { UserName } from "#/domain/model/user/UserName";
+import { transferType } from "#/domain/model/user/UserType";
 import { UserService } from "#/domain/service/UserService";
-import { UserName } from "#/domain/UserName";
-import { transferType } from "#/domain/UserType";
+import { UserData } from "#/dto/user/UserData";
+import { UserDataList } from "#/dto/user/UserDataList";
+import { IUserRepository } from "#/repository/user/IUserRepository";
 import { Inject } from "typedi/decorators/Inject";
 import { Transaction } from "typeorm";
-import { UserId } from "../domain/UserId";
 import { UserRegisterCommand } from "./command/UserRegisterCommand";
-import { UserData } from "../dto/UserData";
-import { UserDataList } from "../dto/UserDataList";
-import { IUserRepository } from "../repository/IUserRepository";
 
 export class UserApplicationService {
   private readonly userFactory: IUserFactory

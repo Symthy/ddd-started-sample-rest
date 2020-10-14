@@ -1,8 +1,9 @@
-import { IUserRepository } from "#/repository/IUserRepository";
-import { User } from "../User";
-import { UserId } from "../UserId";
-import { UserName } from "../UserName";
-import { UserType } from "../UserType";
+import { IUserRepository } from "#/repository/user/IUserRepository";
+import { User } from "../model/user/User";
+import { UserId } from "../model/user/UserId";
+import { UserName } from "../model/user/UserName";
+import { UserType } from "../model/user/UserType";
+
 import { IUserFactory } from "./IUserFactory";
 
 export class UserFactory implements IUserFactory {
