@@ -6,6 +6,12 @@ import { UserId } from "#/domain/model/user/UserId";
 import { UserName } from "#/domain/model/user/UserName";
 import { transferType } from "#/domain/model/user/UserType";
 import { GroupService } from "#/domain/service/GroupService";
+import { GroupData } from "#/dto/group/GroupData";
+import { GroupDataList } from "#/dto/group/GroupDataList";
+import { CanNotRegisterGroupException } from "#/exception/CanNotRegisterGroupException";
+import { GroupFullException } from "#/exception/GroupFullException";
+import { GroupNotFoundException } from "#/exception/GroupNotFoundException";
+import { UserNotFoundException } from "#/exception/UserNotFoundException";
 import { IGroupRepository } from "#/repository/group/IGroupRepository";
 import { IUserRepository } from "#/repository/user/IUserRepository";
 import { Transaction } from "typeorm";
@@ -21,6 +27,15 @@ export class GroupApplicationService {
     private _userRepository: IUserRepository) {
   }
 
+  public get(command: GroupGetCommand): Promise<GroupData | null> {
+    const id = new GroupId(command.id);
+    return this._groupRepository.findById(id);
+  }
+
+  public getAll(): Promise<GroupDataList> {
+    return this._groupRepository.findAll();
+  }
+
   @Transaction()
   public create(command: GroupCreateCommand): void {
     const ownerId = new UserId(command.ownerId);
@@ -33,7 +48,7 @@ export class GroupApplicationService {
         new UserId(ownerData.id),
         ownerData.name ? new UserName(ownerData.name) : undefined,
         ownerData.type ? transferType(ownerData.type) : undefined);
-      var group = this._groupFactory.create(name, owner);
+      const group = this._groupFactory.create(name, owner);
       if (this._groupService.exists(group)) {
         throw new CanNotRegisterGroupException(group);
       }
@@ -51,7 +66,7 @@ export class GroupApplicationService {
       const groupId = new GroupId(command.groupId);
       const group = this._groupRepository.findById(groupId);
       if (group == null) {
-        throw new GroupNotFoundException(group);
+        throw new GroupNotFoundException(groupId);
       }
       if (group.isFull()) {
         throw new GroupFullException(groupId);

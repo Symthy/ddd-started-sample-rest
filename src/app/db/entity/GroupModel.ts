@@ -12,7 +12,7 @@ export class GroupModel {
 
   @OneToOne(type => UserModel)
   @JoinColumn({ name: 'user_id'})
-  owner!: string;
+  owner!: number;
 
   @ManyToMany(type => UserModel)
   @JoinTable({
