@@ -10,15 +10,14 @@ export class Group {
   private _owner: User;
   private _members: Array<User>;
 
-  public constructor(id: GroupId, name: GroupName, owner: User, members: Array<User>) {
-    if (id == null) throw new ArgumentNullException(id);
-    if (name == null) throw new ArgumentNullException(name);
-    if (owner == null) throw new ArgumentNullException(owner);
-    if (members == null) throw new ArgumentNullException(members);
+  public constructor(id: GroupId, name: GroupName, owner: User, members?: Array<User>) {
+    if (!id) throw new ArgumentNullException(id);
+    if (!name) throw new ArgumentNullException(name);
+    if (!owner) throw new ArgumentNullException(owner);
     this._id = id;
     this._name = name;
     this._owner = owner;
-    this._members = members
+    this._members = members || [];
   }
 
   public get id(): GroupId {

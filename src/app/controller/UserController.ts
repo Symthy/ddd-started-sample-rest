@@ -21,14 +21,14 @@ export class UserController {
     return this._userApplicationService.get(command);
   }
 
-  @Post("/users")
+  @Post('/users')
   public post(@Body() user: UserPostRequestModel): void {
     const command = new UserRegisterCommand(user);
     this._userApplicationService.register(command);
   }
 
-  @Put("/users/:id")
-  public put(@Param("id") id: number, @Body() user: UserPutRequestModel): void {
+  @Put('/users/:id')
+  public put(@Param('id') id: number, @Body() user: UserPutRequestModel): void {
     const command = new UserUpdateCommand(id, user.name, user.type);
     this._userApplicationService.update(command);
   }

@@ -1,8 +1,10 @@
 import { GroupData } from "#/dto/group/GroupData";
 import { GroupDataList } from "#/dto/group/GroupDataList";
-import { UserData } from "#/dto/user/UserData";
+import { GroupCreateCommand } from "#/service/group/command/GroupCreateCommand";
 import { GroupApplicationService } from "#/service/group/GroupApplicationService";
-import { Get, Param } from "routing-controllers";
+import { group } from "console";
+import { Body, Get, Param, Post } from "routing-controllers";
+import { GroupPostRequestModel } from "./request/group/GroupPostRequestModel";
 
 export class GroupController {
 
@@ -18,5 +20,11 @@ export class GroupController {
   public get(@Param("id") id: number): Promise<GroupData | null> {
     const command = new GroupGetCommand(id);
     return this._groupApplicationService.get(command);
+  }
+
+  @Post('/groups')
+  public post(@Body() group: GroupPostRequestModel): void {
+    const command = new GroupCreateCommand(group.name, group.ownerId);
+    this._groupApplicationService.create(command);
   }
 }

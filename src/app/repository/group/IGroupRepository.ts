@@ -9,4 +9,5 @@ export interface IGroupRepository {
   findById(id: GroupId): Promise<GroupData | null>;
   find(name: GroupName): Promise<GroupData | null>;
   findAll(): Promise<GroupDataList>;
+  getNextId(): Promise<number>;
 }

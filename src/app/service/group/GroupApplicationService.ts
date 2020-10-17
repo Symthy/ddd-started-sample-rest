@@ -48,11 +48,12 @@ export class GroupApplicationService {
         new UserId(ownerData.id),
         ownerData.name ? new UserName(ownerData.name) : undefined,
         ownerData.type ? transferType(ownerData.type) : undefined);
-      const group = this._groupFactory.create(name, owner);
-      if (this._groupService.exists(group)) {
-        throw new CanNotRegisterGroupException(group);
-      }
-      this._groupRepository.save(group);
+      this._groupFactory.createDecideId(name, owner).then(group => {
+        if (this._groupService.exists(group)) {
+          throw new CanNotRegisterGroupException(group);
+        }
+        this._groupRepository.save(group);
+      });
     });
   }
 
@@ -64,19 +65,21 @@ export class GroupApplicationService {
         throw new UserNotFoundException(userId);
       }
       const groupId = new GroupId(command.groupId);
-      const group = this._groupRepository.findById(groupId);
-      if (group == null) {
-        throw new GroupNotFoundException(groupId);
-      }
-      if (group.isFull()) {
-        throw new GroupFullException(groupId);
-      }
-      const member = this._userFactory.create(
-        new UserId(memberData.id),
-        memberData.name ? new UserName(memberData.name) : undefined,
-        memberData.type ? transferType(memberData.type) : undefined);
-      group.members.push(member);
-      this._groupRepository.save(group);
+      this._groupRepository.findById(groupId).then(groupModel => {
+        if (groupModel == null) {
+          throw new GroupNotFoundException(groupId);
+        }
+        const group = this._groupFactory.createFromModel(groupModel);
+        if (group.isFull()) {
+          throw new GroupFullException(groupId);
+        }
+        const member = this._userFactory.create(
+          new UserId(memberData.id),
+          memberData.name ? new UserName(memberData.name) : undefined,
+          memberData.type ? transferType(memberData.type) : undefined);
+        group.members.push(member);
+        this._groupRepository.save(group);
+      })
     });
   }
 }

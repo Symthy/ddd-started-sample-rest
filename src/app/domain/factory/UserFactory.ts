@@ -1,12 +1,16 @@
+import { UserModel } from "#/db/entity/UserModel";
+import { UserData } from "#/dto/user/UserData";
 import { IUserRepository } from "#/repository/user/IUserRepository";
+import { Inject } from "typedi/decorators/Inject";
 import { User } from "../model/user/User";
 import { UserId } from "../model/user/UserId";
 import { UserName } from "../model/user/UserName";
-import { UserType } from "../model/user/UserType";
+import { transferType, UserType } from "../model/user/UserType";
 
 import { IUserFactory } from "./IUserFactory";
 
 export class UserFactory implements IUserFactory {
+  @Inject()
   private userRepository!: IUserRepository;
   async createDecideId(name: UserName): Promise<User> {
     const user = this.userRepository.getNextId().then(result => {
@@ -17,5 +21,9 @@ export class UserFactory implements IUserFactory {
   }
   create(id: UserId, name?: UserName, type?: UserType): User {
     return new User(id, name, type);
+  }
+  createFromModel(model: UserData) {
+    const { id, name, type } = model;
+    return new User(new UserId(id), new UserName(name), transferType(type));
   }
 }

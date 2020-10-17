@@ -2,7 +2,7 @@ import { UserModel } from "#/db/entity/UserModel";
 
 export class UserData {
   private _id: number;
-  private _name?: string;
+  private _name: string;
   private _type?: string;
 
   public constructor(source: UserModel) {
@@ -14,7 +14,7 @@ export class UserData {
   public get id(): number {
     return this._id;
   }
-  public get name(): string | undefined {
+  public get name(): string {
     return this._name;
   }
   public get type(): string | undefined {

@@ -8,19 +8,15 @@ export class User {
   private readonly _id: UserId;
   private _name: UserName;
   private _type: UserType;
-  public constructor(_id?: UserId, _name?: UserName, _type?: UserType extends string ? UserType : undefined) {
-    if (_id === undefined) {
-      throw new ArgumentNullException("id");
-    }
-    this._id = _id;
-    if (_name === undefined) {
-      throw new ArgumentNullException("name");
-    }
-    this._name = _name;
-    if (_type === undefined) {
-      this._type = "Normal";
+  public constructor(id?: UserId, name?: UserName, type?: UserType extends string ? UserType : undefined) {
+    if (!id) throw new ArgumentNullException("id");
+    if (!name) throw new ArgumentNullException("name");
+    this._id = id;
+    this._name = name;
+    if (type) {
+      this._type = type;
     } else {
-      this._type = _type;
+      this._type = "Normal";
     }
   }
 
