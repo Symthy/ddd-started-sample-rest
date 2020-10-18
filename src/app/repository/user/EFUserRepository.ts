@@ -1,7 +1,7 @@
 import { UserModel } from "#/db/entity/UserModel";
 import { Repository } from "typeorm";
 import { IUserRepository } from "./IUserRepository";
-import { UserDataModelBuilder } from "#/db/UserModelBuilder";
+import { UserModelBuilder } from "#/db/UserModelBuilder";
 import { UserId } from "#/domain/model/user/UserId";
 import { User } from "#/domain/model/user/User";
 import { transferType } from "#/domain/model/user/UserType";
@@ -16,7 +16,7 @@ class EFUserRepository implements IUserRepository {
 
   public async findById(id: UserId): Promise<UserData | null> {
     const user = this.dbcontext.findOne(id.value).then(result => {
-      if (result === undefined) {
+      if (result == null) {
         return null;
       }
       return new UserData(result);
@@ -39,7 +39,7 @@ class EFUserRepository implements IUserRepository {
   }
 
   public async save(user: User): Promise<UserData> {
-    const userModelBuilder = new UserDataModelBuilder();
+    const userModelBuilder = new UserModelBuilder();
     user.notify(userModelBuilder);
     const userModel = userModelBuilder.build();
     return this.dbcontext.save(userModel).then(result => {
@@ -48,7 +48,7 @@ class EFUserRepository implements IUserRepository {
   }
 
   public async remove(user: User): Promise<UserData> {
-    const userModelBuilder = new UserDataModelBuilder();
+    const userModelBuilder = new UserModelBuilder();
     user.notify(userModelBuilder);
     const userModel = userModelBuilder.build();
     return this.dbcontext.remove(userModel).then(result => {

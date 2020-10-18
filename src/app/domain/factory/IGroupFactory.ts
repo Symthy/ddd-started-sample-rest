@@ -6,6 +6,6 @@ import { User } from "../model/user/User";
 
 export interface IGroupFactory {
   createDecideId(name: GroupName, owner: User, members?: Array<User>): Promise<Group>
-  create(id: GroupId, name: GroupName, owner: User, members: Array<User>): Group;
+  create(id: GroupId, name?: GroupName, owner?: User, members?: Array<User>): Group;
   createFromModel(model: GroupData): Group;
 }

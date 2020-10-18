@@ -4,7 +4,7 @@ import { UserType } from "#/domain/model/user/UserType";
 import { UserModel } from "./entity/UserModel";
 import { IUserNotification } from "./IUserNotification";
 
-export class UserDataModelBuilder implements IUserNotification {
+export class UserModelBuilder implements IUserNotification {
   private _id?: UserId;
   private _name?: UserName;
   private _type?: UserType;

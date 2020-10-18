@@ -31,4 +31,8 @@ export class GroupModel {
 
   @CreateDateColumn({ name: 'update_at' })
   readonly updatedAt!: Date;
+
+  constructor(id?: number, name?: string, owner?: UserModel, members?: Array<UserModel>) {
+
+  }
 }

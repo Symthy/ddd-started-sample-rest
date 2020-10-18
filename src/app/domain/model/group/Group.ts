@@ -1,3 +1,4 @@
+import { IGroupNotification } from "#/db/IGroupNotification";
 import { ArgumentNullException } from "#/exception/ArgumentNullException";
 import { GroupFullException } from "#/exception/GroupFullException";
 import { User } from "../user/User";
@@ -7,13 +8,12 @@ import { GroupName } from "./GroupName";
 export class Group {
   private _id: GroupId;
   private _name: GroupName;
-  private _owner: User;
+  private _owner?: User;
   private _members: Array<User>;
 
-  public constructor(id: GroupId, name: GroupName, owner: User, members?: Array<User>) {
-    if (!id) throw new ArgumentNullException(id);
-    if (!name) throw new ArgumentNullException(name);
-    if (!owner) throw new ArgumentNullException(owner);
+  public constructor(id?: GroupId, name?: GroupName, owner?: User, members?: Array<User>) {
+    if (id == null) throw new ArgumentNullException('id');
+    if (name == null) throw new ArgumentNullException('name');
     this._id = id;
     this._name = name;
     this._owner = owner;
@@ -26,7 +26,7 @@ export class Group {
   public get name(): GroupName {
     return this._name;
   }
-  public get owner(): User {
+  public get owner(): User | undefined {
     return this._owner;
   }
   public get members(): Array<User> {
@@ -45,5 +45,13 @@ export class Group {
       throw new GroupFullException(this.id);
     }
     this._members.push(user);
+  }
+
+  public notify(note: IGroupNotification) {
+    // 内部データを非公開のまま外部に引き渡すためのもの
+    note.id(this.id);
+    note.name(this.name);
+    if(this.owner != null) note.owner(this.owner);
+    note.members(this.members);
   }
 }

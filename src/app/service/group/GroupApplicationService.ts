@@ -82,4 +82,22 @@ export class GroupApplicationService {
       })
     });
   }
+
+  @Transaction()
+  public update(command: GroupUpdateCommand): void {
+    const id = new GroupId(command.id);
+    const name = command.name ? new GroupName(command.name) : undefined;
+    const ownerPromise = command.id ? this._userRepository.findById(new UserId(command.id)) : undefined;
+    ownerPromise?.then(result => {
+      const owner = result ? this._userFactory.create(
+        new UserId(result.id), new UserName(result.name), transferType(result.type)) : undefined
+      this._groupRepository.save(this._groupFactory.create(id, name, owner));
+    })
+  }
+
+  @Transaction()
+  public delete(command: GroupDeleteCommand): void {
+    const id = new GroupId(command.id);
+    this._groupRepository.remove(id);
+  }
 }

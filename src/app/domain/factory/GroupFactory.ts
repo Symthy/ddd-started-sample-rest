@@ -19,7 +19,7 @@ export class GroupFactory implements IGroupFactory {
     });
     return group;
   }
-  create(id: GroupId, name: GroupName, owner: User, members: Array<User>): Group {
+  create(id?: GroupId, name?: GroupName, owner?: User, members?: Array<User>): Group {
     return new Group(id, name, owner, members);
   }
   createFromModel(model: GroupData): Group {
