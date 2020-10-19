@@ -9,7 +9,7 @@ export class UserService {
 
   public exists(user: User): boolean {
     const builder = new UserModelBuilder();
-    const duplicatedUser = this._userRepository.find(builder.build());
+    const duplicatedUser = this._userRepository.findOne(builder.build());
     return duplicatedUser != null;
   }
 }

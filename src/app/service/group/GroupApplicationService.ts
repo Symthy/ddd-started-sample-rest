@@ -17,6 +17,7 @@ import { IUserRepository } from "#/repository/user/IUserRepository";
 import { Transaction } from "typeorm";
 import { GroupCreateCommand } from "./command/GroupCreateCommand";
 import { GroupJoinCommand } from "./command/GroupJoinCommand";
+import { GroupFullSpecification } from "./spec/GroupFullSpecification";
 
 export class GroupApplicationService {
   public constructor(
@@ -70,9 +71,12 @@ export class GroupApplicationService {
           throw new GroupNotFoundException(groupId);
         }
         const group = this._groupFactory.createFromModel(groupModel);
-        if (group.isFull()) {
+
+        const groupFullSpec = new GroupFullSpecification(this._userRepository);
+        if (groupFullSpec.isSatisfiedBy(group)) {
           throw new GroupFullException(groupId);
         }
+
         const member = this._userFactory.create(
           new UserId(memberData.id),
           memberData.name ? new UserName(memberData.name) : undefined,
