@@ -8,7 +8,7 @@ export class GroupFullSpecification {
   }
 
   public isSatisfiedBy(group: Group): Promise<boolean> {
-    return this._userRepository.find(group.members).then(userList => {
+    return this._userRepository.findMulti(group.members).then(userList => {
       const premiumUserNum = userList.users.filter(user => user.type === "Premium").length;
       const groupUpperLimit = premiumUserNum < 10 ? 30 : 50;
       return group.members.length >= groupUpperLimit;

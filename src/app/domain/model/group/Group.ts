@@ -8,12 +8,13 @@ import { GroupName } from "./GroupName";
 export class Group {
   private _id: GroupId;
   private _name: GroupName;
-  private _owner?: User;
+  private _owner: User;
   private _members: Array<User>;
 
   public constructor(id?: GroupId, name?: GroupName, owner?: User, members?: Array<User>) {
     if (id == null) throw new ArgumentNullException('id');
     if (name == null) throw new ArgumentNullException('name');
+    if (owner == null) throw new ArgumentNullException('owner');
     this._id = id;
     this._name = name;
     this._owner = owner;
@@ -26,7 +27,7 @@ export class Group {
   public get name(): GroupName {
     return this._name;
   }
-  public get owner(): User | undefined {
+  public get owner(): User {
     return this._owner;
   }
   public get members(): Array<User> {

@@ -8,6 +8,7 @@ import { transferType } from "#/domain/model/user/UserType";
 import { UserName } from "#/domain/model/user/UserName";
 import { UserData } from "#/dto/user/UserData";
 import { UserDataList } from "#/dto/user/UserDataList";
+import { UserModelConverter } from "../UserModelConverter";
 
 class EFUserRepository implements IUserRepository {
 
@@ -24,12 +25,13 @@ class EFUserRepository implements IUserRepository {
     return user;
   }
 
-  public async findOne(user: UserModel): Promise<UserDataList> {
-    const users = this.dbcontext.find(user).then(result => { return new UserDataList(result) });
+  public async find(user: User): Promise<UserDataList> {
+    const users = this.dbcontext.find(UserModelConverter.toModel(user))
+      .then(result => new UserDataList(result));
     return users;
   }
 
-  public async find(users: Array<User>): Promise<UserDataList> {
+  public async findMulti(users: Array<User>): Promise<UserDataList> {
     const userIds = users.map(user => {
       return user.id;
     })
@@ -63,25 +65,5 @@ class EFUserRepository implements IUserRepository {
     return this.dbcontext.remove(userModel).then(result => {
       return new UserData(result);
     });
-  }
-
-  private toDomain(from: UserModel): User {
-    return new User(
-      new UserId(from.id),
-      new UserName(from.name),
-      transferType(from.type)
-    )
-  }
-  private transfer(from: User, to: UserModel) {
-    to.id = from.id.value;
-    to.name = from.name.value;
-    to.type = from.type;
-  }
-  private toDataModel(from: User): UserModel {
-    return new UserModel(
-      from.id.value,
-      from.name.value,
-      transferType(from.type)
-    )
   }
 }

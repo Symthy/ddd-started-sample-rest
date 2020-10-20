@@ -7,8 +7,8 @@ import { UserDataList } from "#/dto/user/UserDataList";
 
 export interface IUserRepository {
   findById(id: UserId): Promise<UserData | null>;
-  findOne(user: UserModel): Promise<UserDataList>;
-  find(users: Array<User>): Promise<UserDataList>;
+  find(user: User): Promise<UserDataList>;
+  findMulti(users: Array<User>): Promise<UserDataList>;
   findAll(): Promise<UserDataList>;
   getNextId(): Promise<number>;
   save(user: User): Promise<UserData>;

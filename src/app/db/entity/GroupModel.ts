@@ -5,7 +5,7 @@ import { UserModel } from "./UserModel";
 export class GroupModel {
 
   @PrimaryGeneratedColumn()
-  readonly id!: number;
+  id!: number;
 
   @Column()
   name!: string;
@@ -24,7 +24,7 @@ export class GroupModel {
       name: 'user_id',
       referencedColumnName: 'id',
     },})
-  member?: UserModel[];
+  members?: UserModel[];
 
   @CreateDateColumn({ name: 'create_at' })
   readonly createdAt!: Date;

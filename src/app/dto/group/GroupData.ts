@@ -12,7 +12,7 @@ export class GroupData {
     this._id = source.id;
     this._name = source.name;
     this._owner = new UserData(source.owner);
-    this._member = new UserDataList(source.member || []);
+    this._member = new UserDataList(source.members || []);
   }
 
   public get id(): number {

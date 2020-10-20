@@ -5,6 +5,7 @@ import { GroupId } from "#/domain/model/group/GroupId";
 import { GroupData } from "#/dto/group/GroupData";
 import { GroupDataList } from "#/dto/group/GroupDataList";
 import { Repository } from "typeorm";
+import { GroupModelConverter } from "../GroupModelConverter";
 import { IGroupRepository } from "./IGroupRepository";
 
 export class EFGroupRepository implements IGroupRepository {
@@ -22,8 +23,9 @@ export class EFGroupRepository implements IGroupRepository {
     return group;
   }
 
-  public async find(group: GroupModel): Promise<GroupDataList> {
-    const groups = this.dbcontext.find(group).then(result => { return new GroupDataList(result) });
+  public async find(group: Group): Promise<GroupDataList> {
+    const groups = this.dbcontext.find(GroupModelConverter.toModel(group))
+      .then(result => new GroupDataList(result));
     return groups;
   }
 
