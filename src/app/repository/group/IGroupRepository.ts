@@ -1,13 +1,11 @@
 import { Group } from "#/domain/model/group/Group";
 import { GroupId } from "#/domain/model/group/GroupId";
-import { GroupData } from "#/dto/group/GroupData";
-import { GroupDataList } from "#/dto/group/GroupDataList";
 
 export interface IGroupRepository {
   save(group: Group): void;
-  findById(id: GroupId): Promise<GroupData | null>;
-  find(group: Group): Promise<GroupDataList>;
-  findAll(): Promise<GroupDataList>;
+  findById(id: GroupId): Promise<Group | null>;
+  find(group: Group): Promise<Array<Group>>;
+  findAll(): Promise<Array<Group>>;
   getNextId(): Promise<number>;
-  remove(id: GroupId): Promise<GroupData>;
+  remove(id: GroupId): Promise<Group>;
 }

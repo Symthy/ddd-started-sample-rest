@@ -1,16 +1,13 @@
 
-import { UserModel } from "#/db/entity/UserModel";
 import { User } from "#/domain/model/user/User";
 import { UserId } from "#/domain/model/user/UserId";
-import { UserData } from "#/dto/user/UserData";
-import { UserDataList } from "#/dto/user/UserDataList";
 
 export interface IUserRepository {
-  findById(id: UserId): Promise<UserData | null>;
-  find(user: User): Promise<UserDataList>;
-  findMulti(users: Array<User>): Promise<UserDataList>;
-  findAll(): Promise<UserDataList>;
+  findById(id: UserId): Promise<User | null>;
+  find(user: User): Promise<Array<User>>;
+  findMulti(users: Array<User>): Promise<Array<User>>;
+  findAll(): Promise<Array<User>>;
   getNextId(): Promise<number>;
-  save(user: User): Promise<UserData>;
-  remove(user: User): Promise<UserData>;
+  save(user: User): Promise<User>;
+  remove(user: User): Promise<User>;
 }

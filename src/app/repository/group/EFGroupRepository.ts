@@ -13,46 +13,42 @@ export class EFGroupRepository implements IGroupRepository {
   public constructor(private readonly dbcontext: Repository<GroupModel>) {
   }
 
-  public async findById(id: GroupId): Promise<GroupData | null> {
-    const group = this.dbcontext.findOne(id.value).then(result => {
-      if (result == null) {
+  public async findById(id: GroupId): Promise<Group | null> {
+    return this.dbcontext.findOne(id.value).then(groupModel => {
+      if (groupModel == null) {
         return null;
       }
-      return new GroupData(result);
+      return GroupModelConverter.toDomain(groupModel);
     });
-    return group;
   }
 
-  public async find(group: Group): Promise<GroupDataList> {
-    const groups = this.dbcontext.find(GroupModelConverter.toModel(group))
-      .then(result => new GroupDataList(result));
-    return groups;
+  public async find(group: Group): Promise<Array<Group>> {
+    return this.dbcontext.find(GroupModelConverter.toModel(group))
+      .then(groupModels => groupModels.map(model => GroupModelConverter.toDomain(model)));
   }
 
-  public async findAll(): Promise<GroupDataList> {
-    const groups = this.dbcontext.query(`SELECT * FROM groups`).then(result => { return result });
-    return groups;
+  public async findAll(): Promise<Array<Group>> {
+    return this.dbcontext.find({
+      select: ['id', 'name', 'owner', "members"]
+    }).then(groupModels => groupModels.map(model => GroupModelConverter.toDomain(model)));
   }
 
   public async getNextId(): Promise<number> {
-    return this.dbcontext.query(`SELECT * FROM groups WHERE id=(SELECT MAX(id) FROM groups)`);
+    return this.dbcontext.createQueryBuilder("groups")
+      .select("MAX(groups.id)", "max").getRawOne().then(result => result + 1);
   }
 
-  public async save(group: Group): Promise<GroupData> {
+  public async save(group: Group): Promise<Group> {
     const groupModelBuilder = new GroupModelBuilder();
     group.notify(groupModelBuilder);
-    const groupModel = groupModelBuilder.build();
-    return this.dbcontext.save(groupModel).then(result => {
-      return new GroupData(result);
-    });
+    return this.dbcontext.save(groupModelBuilder.build())
+      .then(groupModel => GroupModelConverter.toDomain(groupModel));
   }
 
-  public async remove(id: GroupId): Promise<GroupData> {
+  public async remove(id: GroupId): Promise<Group> {
     const groupModelBuilder = new GroupModelBuilder();
     groupModelBuilder.id(id);
-    const groupModel = groupModelBuilder.build();
-    return this.dbcontext.remove(groupModel).then(result => {
-      return new GroupData(result);
-    });
+    return this.dbcontext.remove(groupModelBuilder.build())
+      .then(groupModel => GroupModelConverter.toDomain(groupModel));
   }
 }

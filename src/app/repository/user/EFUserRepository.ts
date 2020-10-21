@@ -15,55 +15,49 @@ class EFUserRepository implements IUserRepository {
   public constructor(private readonly dbcontext: Repository<UserModel>) {
   }
 
-  public async findById(id: UserId): Promise<UserData | null> {
-    const user = this.dbcontext.findOne(id.value).then(result => {
-      if (result == null) {
+  public async findById(id: UserId): Promise<User | null> {
+    return this.dbcontext.findOne(id.value).then(userModel => {
+      if (userModel == null) {
         return null;
       }
-      return new UserData(result);
+      return UserModelConverter.toDomain(userModel);
     });
-    return user;
   }
 
-  public async find(user: User): Promise<UserDataList> {
-    const users = this.dbcontext.find(UserModelConverter.toModel(user))
-      .then(result => new UserDataList(result));
-    return users;
+  public async find(user: User): Promise<Array<User>> {
+    return this.dbcontext.find(UserModelConverter.toModel(user))
+      .then(userModels => userModels.map(model => UserModelConverter.toDomain(model)));
   }
 
-  public async findMulti(users: Array<User>): Promise<UserDataList> {
-    const userIds = users.map(user => {
-      return user.id;
-    })
-    return this.dbcontext.findByIds(userIds).then(userModels => {
-      return new UserDataList(userModels);
-    })
+  public async findMulti(users: Array<User>): Promise<Array<User>> {
+    const userIds = users.map(user => user.id);
+    return this.dbcontext.findByIds(userIds)
+      .then(userModels => userModels.map(model => UserModelConverter.toDomain(model)));
   }
 
-  public async findAll(): Promise<UserDataList> {
-    const users = this.dbcontext.query(`SELECT * FROM USERS`).then(result => { return result });
-    return users;
+  public async findAll(): Promise<Array<User>> {
+    return this.dbcontext.find({
+      select: ['id', 'name', 'type']
+    }).then(userModels => userModels.map(model => UserModelConverter.toDomain(model)));
   }
 
   public async getNextId(): Promise<number> {
-    return this.dbcontext.query(`SELECT * FROM users WHERE id=(SELECT MAX(id) FROM users)`);
+    return this.dbcontext.createQueryBuilder("users")
+      .select("MAX(users.id)", "max").getRawOne().then(result => result + 1);
   }
 
-  public async save(user: User): Promise<UserData> {
+  public async save(user: User): Promise<User> {
     const userModelBuilder = new UserModelBuilder();
     user.notify(userModelBuilder);
-    const userModel = userModelBuilder.build();
-    return this.dbcontext.save(userModel).then(result => {
-      return new UserData(result);
-     });
+
+    return this.dbcontext.save(userModelBuilder.build())
+      .then(model => UserModelConverter.toDomain(model));
   }
 
-  public async remove(user: User): Promise<UserData> {
+  public async remove(user: User): Promise<User> {
     const userModelBuilder = new UserModelBuilder();
     user.notify(userModelBuilder);
-    const userModel = userModelBuilder.build();
-    return this.dbcontext.remove(userModel).then(result => {
-      return new UserData(result);
-    });
+    return this.dbcontext.remove(userModelBuilder.build())
+      .then(model => UserModelConverter.toDomain(model));
   }
 }
