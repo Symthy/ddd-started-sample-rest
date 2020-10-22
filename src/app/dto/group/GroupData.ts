@@ -1,4 +1,4 @@
-import { GroupModel } from "#/db/entity/GroupModel";
+import { Group } from "#/domain/model/group/Group";
 import { UserData } from "../user/UserData";
 import { UserDataList } from "../user/UserDataList";
 
@@ -8,9 +8,9 @@ export class GroupData {
   private _owner: UserData;
   private _member: UserDataList;
 
-  public constructor(source: GroupModel) {
-    this._id = source.id;
-    this._name = source.name;
+  public constructor(source: Group) {
+    this._id = source.id.value;
+    this._name = source.name.value;
     this._owner = new UserData(source.owner);
     this._member = new UserDataList(source.members || []);
   }

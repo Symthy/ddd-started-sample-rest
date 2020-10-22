@@ -1,7 +1,6 @@
 import { GroupData } from "#/dto/group/GroupData";
 import { GroupDataList } from "#/dto/group/GroupDataList";
 import { GroupCreateCommand } from "#/service/group/command/GroupCreateCommand";
-import { GroupJoinCommand } from "#/service/group/command/GroupJoinCommand";
 import { GroupApplicationService } from "#/service/group/GroupApplicationService";
 import { Body, Delete, Get, Param, Post, Put } from "routing-controllers";
 import { GroupPostRequestModel } from "./request/group/GroupPostRequestModel";

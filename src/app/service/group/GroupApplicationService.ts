@@ -30,11 +30,12 @@ export class GroupApplicationService {
 
   public get(command: GroupGetCommand): Promise<GroupData | null> {
     const id = new GroupId(command.id);
-    return this._groupRepository.findById(id);
+    return this._groupRepository.findById(id)
+      .then(group => group == null ? null : new GroupData(group));
   }
 
   public getAll(): Promise<GroupDataList> {
-    return this._groupRepository.findAll();
+    return this._groupRepository.findAll().then(groups => new GroupDataList(groups));
   }
 
   @Transaction()
@@ -46,8 +47,8 @@ export class GroupApplicationService {
       }
       const name = new GroupName(command.name);
       const owner = this._userFactory.create(
-        new UserId(ownerData.id),
-        ownerData.name ? new UserName(ownerData.name) : undefined,
+        new UserId(ownerData.id.value),
+        ownerData.name ? new UserName(ownerData.name.value) : undefined,
         ownerData.type ? transferType(ownerData.type) : undefined);
       this._groupFactory.createDecideId(name, owner).then(group => {
         if (this._groupService.exists(group)) {
@@ -61,26 +62,21 @@ export class GroupApplicationService {
   @Transaction()
   public join(command: GroupJoinCommand) {
     const userId = new UserId(command.userId);
-    this._userRepository.findById(userId).then(memberData => {
-      if (memberData == null) {
+    this._userRepository.findById(userId).then(member => {
+      if (member == null) {
         throw new UserNotFoundException(userId);
       }
       const groupId = new GroupId(command.groupId);
-      this._groupRepository.findById(groupId).then(groupModel => {
-        if (groupModel == null) {
+      this._groupRepository.findById(groupId).then(group => {
+        if (group == null) {
           throw new GroupNotFoundException(groupId);
         }
-        const group = this._groupFactory.createFromModel(groupModel);
 
         const groupFullSpec = new GroupFullSpecification(this._userRepository);
         if (groupFullSpec.isSatisfiedBy(group)) {
           throw new GroupFullException(groupId);
         }
 
-        const member = this._userFactory.create(
-          new UserId(memberData.id),
-          memberData.name ? new UserName(memberData.name) : undefined,
-          memberData.type ? transferType(memberData.type) : undefined);
         group.members.push(member);
         this._groupRepository.save(group);
       })
@@ -91,10 +87,9 @@ export class GroupApplicationService {
   public update(command: GroupUpdateCommand): void {
     const id = new GroupId(command.id);
     const name = command.name ? new GroupName(command.name) : undefined;
-    const ownerPromise = command.id ? this._userRepository.findById(new UserId(command.id)) : undefined;
-    ownerPromise?.then(result => {
-      const owner = result ? this._userFactory.create(
-        new UserId(result.id), new UserName(result.name), transferType(result.type)) : undefined
+    const ownerPromise = command.id == null ? this._userRepository.findById(new UserId(command.id)) : undefined;
+    ownerPromise?.then(user => {
+      const owner = user || undefined;
       this._groupRepository.save(this._groupFactory.create(id, name, owner));
     })
   }

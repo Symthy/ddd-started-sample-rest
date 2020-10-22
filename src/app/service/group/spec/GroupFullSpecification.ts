@@ -1,5 +1,3 @@
-import { UserModel } from "#/db/entity/UserModel";
-import { UserModelBuilder } from "#/db/UserModelBuilder";
 import { Group } from "#/domain/model/group/Group";
 import { IUserRepository } from "#/repository/user/IUserRepository";
 

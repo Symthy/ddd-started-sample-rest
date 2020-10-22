@@ -23,11 +23,13 @@ export class UserApplicationService {
 
   public get(command: UserGetCommand): Promise<UserData | null> {
     const id = new UserId(command.id);
-    return this.userRepository.findById(id);
+    return this.userRepository.findById(id).then(user => {
+      return user == null ? null : new UserData(user);
+    });
   }
 
   public getAll(): Promise<UserDataList> {
-    return this.userRepository.findAll();
+    return this.userRepository.findAll().then(users => new UserDataList(users));
   }
 
   @Transaction()
