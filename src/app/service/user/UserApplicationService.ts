@@ -1,3 +1,4 @@
+import { UserModel } from "#/db/entity/UserModel";
 import { IUserFactory } from "#/domain/factory/IUserFactory";
 import { UserId } from "#/domain/model/user/UserId";
 import { UserName } from "#/domain/model/user/UserName";
@@ -7,18 +8,22 @@ import { UserData } from "#/dto/user/UserData";
 import { UserDataList } from "#/dto/user/UserDataList";
 import { IUserRepository } from "#/repository/user/IUserRepository";
 import { Inject } from "typedi/decorators/Inject";
+import { Service } from "typedi/decorators/Service";
 import { Transaction } from "typeorm";
+import { OrmRepository } from "typeorm-typedi-extensions";
 import { UserRegisterCommand } from "./command/UserRegisterCommand";
 
+@Service('user.service')
 export class UserApplicationService {
-  private readonly userFactory: IUserFactory
-  @Inject()
-  private readonly userRepository!: IUserRepository
-  private readonly userService: UserService
 
-  public constructor(userFactory: IUserFactory, userService: UserService) {
+  private readonly userFactory: IUserFactory
+  @OrmRepository(UserModel)
+  private readonly userRepository!: IUserRepository
+  @Inject()
+  private readonly userService!: UserService
+
+  public constructor(userFactory: IUserFactory) {
     this.userFactory = userFactory;
-    this.userService = userService;
   }
 
   public get(command: UserGetCommand): Promise<UserData | null> {

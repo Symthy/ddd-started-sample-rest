@@ -1,11 +1,13 @@
-import { UserModelBuilder } from "#/db/UserModelBuilder";
+import { UserModel } from "#/db/entity/UserModel";
 import { IUserRepository } from "#/repository/user/IUserRepository";
+import { Service } from "typedi";
+import { OrmRepository } from "typeorm-typedi-extensions";
 import { User } from "../model/user/User";
 
-
+@Service()
 export class UserService {
-  public constructor(private _userRepository: IUserRepository) {
-  }
+  @OrmRepository(UserModel)
+  private _userRepository!: IUserRepository;
 
   public exists(user: User): boolean {
     const duplicatedUser = this._userRepository.find(user);

@@ -1,3 +1,5 @@
+import { GroupModel } from "#/db/entity/GroupModel";
+import { UserModel } from "#/db/entity/UserModel";
 import { IGroupFactory } from "#/domain/factory/IGroupFactory";
 import { IUserFactory } from "#/domain/factory/IUserFactory";
 import { GroupId } from "#/domain/model/group/GroupId";
@@ -14,18 +16,27 @@ import { GroupNotFoundException } from "#/exception/GroupNotFoundException";
 import { UserNotFoundException } from "#/exception/UserNotFoundException";
 import { IGroupRepository } from "#/repository/group/IGroupRepository";
 import { IUserRepository } from "#/repository/user/IUserRepository";
+import { Inject, Service } from "typedi";
 import { Transaction } from "typeorm";
+import { OrmRepository } from "typeorm-typedi-extensions";
 import { GroupCreateCommand } from "./command/GroupCreateCommand";
 import { GroupJoinCommand } from "./command/GroupJoinCommand";
 import { GroupFullSpecification } from "./spec/GroupFullSpecification";
 
+@Service('group.service')
 export class GroupApplicationService {
+
+  @OrmRepository(GroupModel)
+  private _groupRepository!: IGroupRepository;
+  @OrmRepository(UserModel)
+  private _userRepository!: IUserRepository;
+  @Inject()
+  private _groupService!: GroupService;
+
   public constructor(
     private _groupFactory: IGroupFactory,
-    private _groupRepository: IGroupRepository,
-    private _groupService: GroupService,
-    private _userFactory: IUserFactory,
-    private _userRepository: IUserRepository) {
+    private _userFactory: IUserFactory
+    ) {
   }
 
   public get(command: GroupGetCommand): Promise<GroupData | null> {
