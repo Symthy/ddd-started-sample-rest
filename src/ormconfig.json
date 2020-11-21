@@ -20,5 +20,11 @@
       "entitiesDir": "app/db/entity",
       "migrationsDir": "app/db/migration",
       "subscribersDir": "app/db/subscriber"
-   }
+   },
+   "seeds": [
+      "seeds/**/*{.ts,.js}"
+   ],
+   "factories": [
+      "factories/**/*{.ts,.js}"
+   ]
 }
